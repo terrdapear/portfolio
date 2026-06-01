@@ -1,0 +1,386 @@
+:root {
+  --bg-main: #0a0b0d;
+  --bg-card: #12141c;
+  --bg-card-hover: #171a24;
+  --border-color: #1f2433;
+  --text-primary: #f3f4f6;
+  --text-secondary: #94a3b8;
+  
+  --neon-pink: #ff2a5f;
+  --neon-cyan: #00f2fe;
+  --neon-blue: #3b82f6;
+  --neon-olive: #a3e635;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: 
+    linear-gradient(rgba(31, 36, 51, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 36, 51, 0.3) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center top;
+}
+
+.portfolio-dark {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Navbar */
+.navbar-dark {
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  margin-top: 10px;
+  background-color: rgba(10, 11, 13, 0.75);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.logo-text {
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--neon-cyan);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.btn-github {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #1f2433;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #2e354a;
+}
+
+/* Hero Section */
+.hero-section {
+  padding: 120px 0 80px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgba(255, 42, 95, 0.1);
+  border: 1px solid rgba(255, 42, 95, 0.3);
+  padding: 6px 16px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+}
+
+.badge-text {
+  color: var(--neon-pink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  letter-spacing: -1px;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  max-width: 600px;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ff2a5f, #ff5e62);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255, 42, 95, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* Workspace Layout Settings */
+.workspace-grid {
+  padding: 80px 0;
+}
+
+.grid-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.grid-header h2 {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 32px;
+}
+
+.tech-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+}
+
+.tech-card:hover {
+  background-color: var(--bg-card-hover);
+  border-color: #2e364a;
+  transform: translateY(-4px);
+}
+
+/* --- THE STATIC BOUNDING FRAME --- */
+.card-image-container {
+  position: relative;
+  height: 380px; /* Highlights the photos proudly */
+  width: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+/* --- THE MANUALLY-PAGED SCROLL SNAPPING SLIDER TRACK --- */
+.card-image-slider {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  
+  /* Turns on strict horizontal snapping */
+  scroll-snap-type: x mandatory; 
+  scroll-behavior: smooth;
+  
+  /* Hides scrollbars cleanly */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+.card-image-slider::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* --- INDIVIDUAL IMAGE PAGES --- */
+.card-image-slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0; /* Prevents compression; forces full-width display */
+  scroll-snap-align: start; /* Pin-point alignment anchor */
+  transition: transform 0.5s;
+}
+
+/* Visual Microhint Indicator Overlay text */
+.scroll-hint {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: rgba(10, 11, 13, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 70%, var(--bg-card) 100%);
+  pointer-events: none;
+}
+
+.tech-card:hover .image-overlay {
+  background: linear-gradient(to bottom, transparent 70%, var(--bg-card-hover) 100%);
+}
+
+/* --- SHRUNK COMPACT GREY CONTENT BOX --- */
+.card-content {
+  padding: 16px 24px 20px 24px; /* Shrunk padding down tightly */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.badge-blue { color: var(--neon-cyan); }
+.badge-pink { color: var(--neon-pink); }
+.badge-olive { color: var(--neon-olive); }
+
+.card-content h3 {
+  font-size: 1.3rem;
+  margin: 0 0 6px 0;
+  font-weight: 600;
+}
+
+.card-content p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  margin: 0 0 16px 0;
+  flex-grow: 1;
+}
+
+.btn-card-action {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tech-card:hover .btn-card-action {
+  color: var(--neon-cyan);
+}
+
+/* Footer UI Design */
+.footer-dark {
+  padding: 100px 0 40px 0;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tech-tag-accent {
+  color: var(--neon-pink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.footer-statement {
+  font-size: 1.6rem;
+  max-width: 700px;
+  line-height: 1.4;
+  margin-bottom: 32px;
+}
+
+.space-btn {
+  margin-bottom: 48px;
+}
+
+.footer-links-grid {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.link-item {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.footer-bottom {
+  width: 100%;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: #4b5563;
+  font-size: 0.85rem;
+}
+
+/* Scroll Reveal System */
+.reveal {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(24px);
+  transition: 
+    opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, filter, transform;
+}
+
+.reveal.active {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0);
+}
