@@ -1,7 +1,123 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
-const CircularSlider = ({ images, altText }) => { // this allows the images to 
+const GameOfLifeBackground = () => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+    let lastTime = 0;
+    
+    const fps = 12; 
+    const interval = 1000 / fps;
+
+    let cols, rows;
+    const cellSize = 18;
+    let grid = [];
+
+    const createGrid = (c, r) => {
+      return new Array(c).fill(null).map(() => 
+        new Array(r).fill(0).map(() => (Math.random() > 0.85 ? 1 : 0))
+      );
+    };
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      cols = Math.floor(canvas.width / cellSize) + 1;
+      rows = Math.floor(canvas.height / cellSize) + 1;
+      grid = createGrid(cols, rows);
+    };
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    const nextGeneration = () => {
+      const nextGrid = grid.map(arr => [...arr]);
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          let state = grid[i][j];
+          let neighbors = 0;
+
+          for (let x = -1; x < 2; x++) {
+            for (let y = -1; y < 2; y++) {
+              if (x === 0 && y === 0) continue;
+              const col = (i + x + cols) % cols;
+              const row = (j + y + rows) % rows;
+              neighbors += grid[col][row];
+            }
+          }
+
+          if (state === 0 && neighbors === 3) {
+            nextGrid[i][j] = 1;
+          } else if (state === 1 && (neighbors < 2 || neighbors > 3)) {
+            nextGrid[i][j] = 0;
+          }
+        }
+      }
+
+      if (Math.random() > 0.90) { // to keep it alive
+        const rx = Math.floor(Math.random() * cols);
+        const ry = Math.floor(Math.random() * rows);
+        nextGrid[rx][ry] = 1;
+      }
+
+      grid = nextGrid;
+    };
+
+    const draw = (currentTime) => {
+      animationFrameId = requestAnimationFrame(draw);
+      
+      const deltaTime = currentTime - lastTime;
+      if (deltaTime > interval) {
+        lastTime = currentTime - (deltaTime % interval);
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = 'rgba(0, 243, 255, 0.15)'; 
+        ctx.shadowColor = '#00f3ff';
+        ctx.shadowBlur = 5;
+
+        for (let i = 0; i < cols; i++) {
+          for (let j = 0; j < rows; j++) {
+            if (grid[i][j] === 1) {
+              ctx.fillRect(i * cellSize, j * cellSize, cellSize - 1, cellSize - 1);
+            }
+          }
+        }
+        
+        nextGeneration();
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(draw);
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return (
+  <canvas 
+    ref={canvasRef} 
+    style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100vh',
+      pointerEvents: 'none',
+      zIndex: -1,
+    }}
+  />
+);
+};
+
+const CircularSlider = ({ images, altText }) => { 
   const sliderRef = useRef(null);
   const isResetting = useRef(false);
 
@@ -67,6 +183,9 @@ const CircularSlider = ({ images, altText }) => { // this allows the images to
 
 
 function App() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [rotation, setRotation] = useState(0);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -90,11 +209,30 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const handlePageScroll = () => {
+      const scrollY = window.scrollY;
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercentage = scrollY / scrollableHeight;
+      const currentRotation = scrollPercentage * 360;
+      
+      setRotation(currentRotation);
+    };
+
+    window.addEventListener('scroll', handlePageScroll);
+    return () => window.removeEventListener('scroll', handlePageScroll);
+  }, []);
+
   return (
     <div className="portfolio-dark">
       <nav className="navbar-dark">
         <div className="nav-profile">
-          <img src="https://i.ibb.co/XZ0hSnDp/AAA-7533.jpg" alt="Terrence" className="avatar" />
+          <img 
+            src="https://i.ibb.co/XZ0hSnDp/AAA-7533.jpg" 
+            alt="Terrence" 
+            className="avatar" 
+            style={{ transform: `rotate(${rotation}deg)` }}
+          />
           <span className="logo-text">TERRENCE</span>
         </div>
         <div className="nav-links">
@@ -107,20 +245,22 @@ function App() {
         </div>
       </nav>
 
-      <header className="hero-section">
+      <header className="hero-section" style={{ position: 'relative' }}>
+        <GameOfLifeBackground />
+        
         <div className="hero-badge reveal">
           <span className="badge-glow"></span>
           <span className="badge-text">sup</span>
         </div>
         <h1 className="hero-title reveal">
-          hi, I'm <span className="text-gradient">Terrence</span>.
+          hi, I'm Terrence
         </h1>
         <p className="hero-subtitle reveal">
           “Give up on your dreams and die.” <span className="text-muted">— Levi Ackerman</span>
         </p>
         <div className="hero-actions reveal">
           <a href="#projects" className="btn-primary">Get started</a>
-          <button className="btn-secondary">View capabilities</button>
+          <button className="btn-secondary" onClick={() => setIsContactOpen(true)}>Contact me</button>
         </div>
       </header>
 
@@ -148,7 +288,7 @@ function App() {
             <div className="card-content">
               <div className="card-badge badge-blue">ACHIEVEMENTS</div>
               <h3>Competitions</h3>
-              <p>Loren Ipcum.</p>
+              <p>I love competing, but I'm relatively new to the scene. I only began during my sophomore year, but in that same year, I qualified and I thrived in 5 out of the 5 national-level math or programming competitions I joined, earning distinctions and high placing finishes.</p>
               <button className="btn-card-action">Press</button>
             </div>
           </section>
@@ -158,14 +298,14 @@ function App() {
             <CircularSlider 
               images={[
                 "https://i.ibb.co/RTqDv2fz/FB-IMG-1780318544436.jpg",
-                "https://i.ibb.co/RTqDv2fz/FB-IMG-1780318544436.jpg"
+                "https://i.ibb.co/WNGbfnrh/7da3fd96-3bb1-4a8f-b691-41827587bd04.jpg"
               ]} 
               altText="Teaching" 
             />
             <div className="card-content">
               <div className="card-badge badge-pink">PASSION</div>
               <h3>Teaching</h3>
-              <p>Description.</p>
+              <p>I love to teach. I spent two years as an online tutor on Fiverr, teaching chess and math. Ever since I step foot on UP, I've taught many student-led lectures, face-to-face and online, as well as tutored spanning several subjects for several hundred hours.</p>
               <button className="btn-card-action">Launch Module →</button>
             </div>
           </section>
@@ -174,7 +314,7 @@ function App() {
           <section className="tech-card reveal">
             <CircularSlider 
               images={[
-                "https://i.ibb.co/jcDFyjm/630435438-1283413927171218-8897090017129508737-n.jpg",
+                "https://i.ibb.co/Gvw7TbVK/558938556-1189407953238483-3248254681896504410-n.jpg",
                 "https://i.ibb.co/jcDFyjm/630435438-1283413927171218-8897090017129508737-n.jpg"
               ]} 
               altText="Organization" 
@@ -182,7 +322,7 @@ function App() {
             <div className="card-content">
               <div className="card-badge badge-olive">FAMILY</div>
               <h3>Organization</h3>
-              <p>Description.</p>
+              <p>Much of my success is thanks to my organization, UPLB Mathematical Sciences Society. They have supported me and generously funded my endeavors. I could not be more grateful to them.</p>
               <button className="btn-card-action">Launch Module →</button>
             </div>
           </section>
@@ -198,8 +338,7 @@ function App() {
         <button className="btn-primary space-btn">Press to do something cool</button>
         
         <div className="footer-links-grid">
-          <a href="t3rrenceissocool@gmail.com" className="link-item">Email</a>
-          <a href="https://behance.net" target="_blank" rel="noreferrer" className="link-item text-pink">Behance</a>
+          <button className="link-item contact-trigger" onClick={() => setIsContactOpen(true)}>Contact Me</button>
           <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="link-item text-cyan">LinkedIn</a>
         </div>
         
@@ -207,6 +346,47 @@ function App() {
           <p>© Terrence de Real 2026 // System Active</p>
         </div>
       </footer>
+
+      <div 
+        className={`contact-overlay ${isContactOpen ? 'open' : ''}`} 
+        onClick={() => setIsContactOpen(false)}
+      ></div>
+      
+      <div className={`contact-drawer ${isContactOpen ? 'open' : ''}`}>
+        <div className="drawer-header">
+          <h2>Let's Talk</h2>
+          <button className="close-btn" onClick={() => setIsContactOpen(false)}>&times;</button>
+        </div>
+        
+        <div className="drawer-content">
+          <p>Hi, if you want to collaborate with me or you need someone to train you or your kid, feel free to contact me using my details below.</p>
+          
+          <div className="contact-detail-item">
+            <span className="detail-label">Email</span>
+            <a href="mailto:t3rrenceissocool@gmail.com" className="detail-value text-cyan">
+              t3rrenceissocool@gmail.com
+            </a>
+          </div>
+
+          <div className="contact-detail-item">
+            <span className="detail-label">Phone</span>
+            <a className="detail-value text-cyan">
+              (+63) 991 682 9492
+            </a>
+          </div>
+          
+          <div className="contact-detail-item">
+            <span className="detail-label">Socials</span>
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="detail-value">
+              LinkedIn
+            </a>
+            <a href="https://github.com" target="_blank" rel="noreferrer" className="detail-value">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }
