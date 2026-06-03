@@ -238,7 +238,7 @@ function App() {
         <div className="nav-links">
           <a href="#projects">Workspace</a>
           <a href="#about">About</a>
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="btn-github">
+          <a href="https://github.com/terrdapear" target="_blank" rel="noreferrer" className="btn-github">
             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
             GitHub
           </a>
@@ -289,7 +289,7 @@ function App() {
               <div className="card-badge badge-blue">ACHIEVEMENTS</div>
               <h3>Competitions</h3>
               <p>I love competing, but I'm relatively new to the scene. I only began during my sophomore year, but in that same year, I qualified and I thrived in 5 out of the 5 national-level math or programming competitions I joined, earning distinctions and high placing finishes.</p>
-              <button className="btn-card-action">Press</button>
+              <button className="btn-card-action">Learn more</button>
             </div>
           </section>
 
@@ -306,7 +306,7 @@ function App() {
               <div className="card-badge badge-pink">PASSION</div>
               <h3>Teaching</h3>
               <p>I love to teach. I spent two years as an online tutor on Fiverr, teaching chess and math. Ever since I step foot on UP, I've taught many student-led lectures, face-to-face and online, as well as tutored spanning several subjects for several hundred hours.</p>
-              <button className="btn-card-action">Launch Module →</button>
+              <button className="btn-card-action">Learn more</button>
             </div>
           </section>
 
@@ -323,7 +323,7 @@ function App() {
               <div className="card-badge badge-olive">FAMILY</div>
               <h3>Organization</h3>
               <p>Much of my success is thanks to my organization, UPLB Mathematical Sciences Society. They have supported me and generously funded my endeavors. I could not be more grateful to them.</p>
-              <button className="btn-card-action">Launch Module →</button>
+              <button className="btn-card-action">Learn more</button>
             </div>
           </section>
           
@@ -339,7 +339,7 @@ function App() {
         
         <div className="footer-links-grid">
           <button className="link-item contact-trigger" onClick={() => setIsContactOpen(true)}>Contact Me</button>
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="link-item text-cyan">LinkedIn</a>
+          <a target="_blank" rel="noreferrer" className="link-item text-cyan">LinkedIn</a>
         </div>
         
         <div className="footer-bottom">
@@ -377,10 +377,13 @@ function App() {
           
           <div className="contact-detail-item">
             <span className="detail-label">Socials</span>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="detail-value">
+            <a href="https://www.facebook.com/terrence.de.real/" className="detail-value">
+              Facebook
+            </a>
+            <a className="detail-value">
               LinkedIn
             </a>
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="detail-value">
+            <a href="https://github.com/terrdapear" target="_blank" rel="noreferrer" className="detail-value">
               GitHub
             </a>
           </div>
